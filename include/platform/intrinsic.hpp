@@ -7,20 +7,9 @@
 #include <cstdlib>
 #include <cstdint>
 
-#if PLATFORM_COMPILER_MSVC
-  #include <xmmintrin.h>
-#endif /* PLATFORM_COMPILE_MSVC */
-
 namespace platform {
 inline namespace v1 {
 namespace intrinsic {
-
-enum class locality : int {
-  none = 0,
-  low = 1,
-  medium = 2,
-  high = 3
-};
 
 [[gnu::always_inline, clang::always_inline]]
 inline std::uint64_t byteswap (std::uint64_t value) noexcept {
@@ -113,24 +102,6 @@ inline std::uint32_t rotate_left (std::uint32_t value, int shift) noexcept {
   return _rotl(value, shift);
 #else
   return (value << shift) | (value >> (32 - shift));
-#endif /* PLATFORM_COMPILER_MSVC */
-}
-
-[[gnu::always_inline, clang::always_inline]]
-inline void prefetch (void const* ptr, locality loc) noexcept {
-  using type = typename std::underlying_type<locality>::type;
-#if PLATFORM_COMPILER_MSVC
-  #if PLATFORM_ARCH_AMD64
-    _mm_prefetch(ptr, static_cast<type>(loc));
-  #elif PLATFORM_ARCH_ARM
-    __prefetch(ptr);
-  #elif PLATFORM_ARCH_X86
-    _mm_prefetch(reinterpret_cast<char const*>(ptr), static_cast<type>(loc));
-  #else
-  #endif /* PLATFORM_ARCH_ARM */
-#elif PLATFORM_COMPILER_GCC || PLATFORM_COMPILER_CLANG
-  __builtin_prefetch(ptr, 0, static_cast<type>(loc));
-#else
 #endif /* PLATFORM_COMPILER_MSVC */
 }
 
