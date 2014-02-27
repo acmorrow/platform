@@ -62,16 +62,16 @@ enum class os_type {
   ios
 };
 
-using is_unknown = utility::enumeration<PLATFORM_OS_UNKNOWN>;
-using is_windows = utility::enumeration<PLATFORM_OS_WINDOWS>;
-using is_android = utility::enumeration<PLATFORM_OS_ANDROID>;
-using is_freebsd = utility::enumeration<PLATFORM_OS_FREEBSD>;
-using is_openbsd = utility::enumeration<PLATFORM_OS_OPENBSD>;
-using is_netbsd = utility::enumeration<PLATFORM_OS_NETBSD>;
-using is_dragon = utility::enumeration<PLATFORM_OS_DRAGON>;
-using is_macosx = utility::enumeration<PLATFORM_OS_MACOSX>;
-using is_linux = utility::enumeration<PLATFORM_OS_LINUX>;
-using is_ios = utility::enumeration<PLATFORM_OS_IOS>;
+using is_unknown = utility::boolean<PLATFORM_OS_UNKNOWN>;
+using is_windows = utility::boolean<PLATFORM_OS_WINDOWS>;
+using is_android = utility::boolean<PLATFORM_OS_ANDROID>;
+using is_freebsd = utility::boolean<PLATFORM_OS_FREEBSD>;
+using is_openbsd = utility::boolean<PLATFORM_OS_OPENBSD>;
+using is_netbsd = utility::boolean<PLATFORM_OS_NETBSD>;
+using is_dragon = utility::boolean<PLATFORM_OS_DRAGON>;
+using is_macosx = utility::boolean<PLATFORM_OS_MACOSX>;
+using is_linux = utility::boolean<PLATFORM_OS_LINUX>;
+using is_ios = utility::boolean<PLATFORM_OS_IOS>;
 
 using unknown = utility::enumeration<os_type, os_type::unknown>;
 using windows = utility::enumeration<os_type, os_type::windows>;
