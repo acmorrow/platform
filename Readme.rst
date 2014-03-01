@@ -23,30 +23,30 @@ Below is a basic example on how to use MNMLSTC Platform::
     #include <cstdint>
 
     namespace {
-      inline std::uint32_t network_to_host (
+      [[gnu::always_inline]] inline std::uint32_t network_to_host (
         std::uint32_t value,
         platform::endian::big
       ) noexcept { return value; }
 
-      inline std::uint32_t network_to_host (
+      [[gnu::always_inline]] inline std::uint32_t network_to_host (
         std::uint32_t value,
         platform::endian::little
       ) noexcept { return platform::intrinsic::byteswap(value); }
 
-      inline std::uint32_t host_to_network (
+      [[gnu::always_inline]] inline std::uint32_t host_to_network (
         std::uint32_t value,
         platform::endian::big
       ) noexcept { return value; }
 
-      inline std::uint32_t host_to_network (
+      [[gnu::always_inline]] inline std::uint32_t host_to_network (
         std::uint32_t value,
         platform::endian::little
       ) noexcept { return platform::intrinsic::byteswap(value); }
     }
 
-    inline std::uint32_t network_to_host (std::uint32_t value) noexcept {
-      return ::network_to_host(value, platform::endian::current);
-    }
+    [[gnu::always_inline]] inline std::uint32_t network_to_host (
+      std::uint32_t value
+    ) noexcept { return ::network_to_host(value, platform::endian::current); }
 
 Requirements
 ------------
