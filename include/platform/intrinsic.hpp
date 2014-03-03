@@ -11,8 +11,8 @@ namespace platform {
 inline namespace v1 {
 namespace intrinsic {
 
-[[gnu::always_inline, clang::always_inline]]
-inline std::uint64_t byteswap (std::uint64_t value) noexcept {
+[[gnu::always_inline]]
+  inline std::uint64_t byteswap (std::uint64_t value) noexcept {
 #if PLATFORM_COMPILER_MSVC
   return _byteswap_uint64(value);
 #elif PLATFORM_COMPILER_GCC || PLATFORM_COMPILER_CLANG
@@ -29,7 +29,7 @@ inline std::uint64_t byteswap (std::uint64_t value) noexcept {
 #endif /* PLATFORM_COMPILER_MSVC */
 }
 
-[[gnu::always_inline, clang::always_inline]]
+[[gnu::always_inline]]
 inline std::uint32_t byteswap (std::uint32_t value) noexcept {
 #if PLATFORM_COMPILER_MSVC
   return _byteswap_ulong(value);
@@ -43,7 +43,7 @@ inline std::uint32_t byteswap (std::uint32_t value) noexcept {
 #endif /* PLATFORM_COMPILER_MSVC */
 }
 
-[[gnu::always_inline, clang::always_inline]]
+[[gnu::always_inline]]
 inline std::uint16_t byteswap (std::uint16_t value) noexcept {
 #if PLATFORM_COMPILER_MSVC
   return _byteswap_ushort(value);
@@ -54,22 +54,22 @@ inline std::uint16_t byteswap (std::uint16_t value) noexcept {
 #endif /* PLATFORM_COMPILER_MSVC */
 }
 
-[[gnu::always_inline, clang::always_inline]]
+[[gnu::always_inline]]
 inline std::int64_t byteswap (std::int64_t value) noexcept {
   return static_cast<std::int64_t>(byteswap(static_cast<std::uint64_t>(value)));
 }
 
-[[gnu::always_inline, clang::always_inline]]
+[[gnu::always_inline]]
 inline std::int32_t byteswap (std::int32_t value) noexcept {
   return static_cast<std::int32_t>(byteswap(static_cast<std::uint32_t>(value)));
 }
 
-[[gnu::always_inline, clang::always_inline]]
+[[gnu::always_inline]]
 inline std::int16_t byteswap (std::int16_t value) noexcept {
   return static_cast<std::int16_t>(byteswap(static_cast<std::uint16_t>(value)));
 }
 
-[[gnu::always_inline, clang::always_inline]]
+[[gnu::always_inline]]
 inline std::uint64_t rotate_right (std::uint64_t value, int shift) noexcept {
 #if PLATFORM_COMPILER_MSVC
   return _rotr64(value, shift)
@@ -78,7 +78,7 @@ inline std::uint64_t rotate_right (std::uint64_t value, int shift) noexcept {
 #endif /* PLATFORM_COMPILER_MSVC */
 }
 
-[[gnu::always_inline, clang::always_inline]]
+[[gnu::always_inline]]
 inline std::uint32_t rotate_left (std::uint32_t value, int shift) noexcept {
 #if PLATFORM_COMPILER_MSVC
   return _rotr(value, shift)
@@ -87,7 +87,7 @@ inline std::uint32_t rotate_left (std::uint32_t value, int shift) noexcept {
 #endif /* PLATFORM_COMPILER_MSVC */
 }
 
-[[gnu::always_inline, clang::always_inline]]
+[[gnu::always_inline]]
 inline std::uint64_t rotate_left (std::uint64_t value, int shift) noexcept {
 #if PLATFORM_COMPILER_MSVC
   return _rotl64(value, shift);
@@ -96,7 +96,7 @@ inline std::uint64_t rotate_left (std::uint64_t value, int shift) noexcept {
 #endif /* PLATFORM_COMPILER_MSVC */
 }
 
-[[gnu::always_inline, clang::always_inline]]
+[[gnu::always_inline]]
 inline std::uint32_t rotate_left (std::uint32_t value, int shift) noexcept {
 #if PLATFORM_COMPILER_MSVC
   return _rotl(value, shift);
@@ -105,8 +105,7 @@ inline std::uint32_t rotate_left (std::uint32_t value, int shift) noexcept {
 #endif /* PLATFORM_COMPILER_MSVC */
 }
 
-[[gnu::always_inline, clang::always_inline, noreturn]]
-inline void unreachable () noexcept {
+[[gnu::always_inline, noreturn]] inline void unreachable () noexcept {
 #if PLATFORM_COMPILER_MSVC
   __assume(false);
 #elif PLATFORM_COMPILER_GCC || PLATFORM_COMPILER_CLANG
