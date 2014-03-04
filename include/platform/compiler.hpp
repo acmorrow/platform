@@ -1,8 +1,6 @@
 #ifndef PLATFORM_COMPILER_HPP
 #define PLATFORM_COMPILER_HPP
 
-#include <type_traits>
-
 #include <platform/utility.hpp>
 
 #define PLATFORM_COMPILER_UNKNOWN 0

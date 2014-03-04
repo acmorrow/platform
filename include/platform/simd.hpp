@@ -1,8 +1,7 @@
 #ifndef PLATFORM_SIMD_HPP
 #define PLATFORM_SIMD_HPP
 
-#include <platform/compiler.hpp>
-#include <platform/arch.hpp>
+#include <platform/utility.hpp>
 
 #define PLATFORM_SIMD_SSE42 0
 #define PLATFORM_SIMD_SSE41 0
