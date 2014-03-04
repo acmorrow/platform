@@ -17,13 +17,13 @@
 #if defined(__clang__)
   #undef PLATFORM_COMPILER_CLANG
   #define PLATFORM_COMPILER_CLANG 1
-#if defined(__INTEL_COMPILER)
+#elif defined(__INTEL_COMPILER)
   #undef PLATFORM_COMPILER_INTEL
   #define PLATFORM_COMPILER_INTEL 1
-#if defined(_MSC_VER)
+#elif defined(_MSC_VER)
   #undef PLATFORM_COMPILER_MSVC
   #define PLATFORM_COMPILER_MSVC 1
-#if defined(__PATHCC__)
+#elif defined(__PATHCC__)
   #undef PLATFORM_COMPILER_EKO
   #define PLATFORM_COMPILER_EKO 1
 #elif defined(__GNUC__)
