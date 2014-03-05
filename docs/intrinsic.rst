@@ -7,8 +7,9 @@ Compiler Intrinsics
 
 Compiler intrinsics are useful in that they usually compile down to the minimal
 assembly instructions. Most common are functions to byteswap, rotate bits, or
-mark a section of code as unreachable. Intrinsics for SIMD are located in
-different components and are outside the scope of this (small) component.
+mark a section of code as unreachable. Intrinsics for specific SIMD
+implementations (for example SSE or NEON) are not within the scope of
+MNMLSTC Platform.
 
 .. namespace:: platform::intrinsic
 

@@ -20,4 +20,5 @@ different component categories.
    <compiler>
    <endian>
    <arch>
+   <simd>
    <os>
