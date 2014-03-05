@@ -71,6 +71,7 @@ enum class arch_type {
   x86
 };
 
+using is_unknown = utility::boolean<PLATFORM_ARCH_UNKNOWN>;
 using is_amd64 = utility::boolean<PLATFORM_ARCH_AMD64>;
 using is_arm64 = utility::boolean<PLATFORM_ARCH_ARM64>;
 using is_thumb = utility::boolean<PLATFORM_ARCH_THUMB>;
