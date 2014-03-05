@@ -16,9 +16,9 @@ different component categories.
    :maxdepth: 1
 
    Using MNMLSTC Platform <usage>
-   <intrinsic>
-   <compiler>
-   <endian>
-   <arch>
-   <simd>
-   <os>
+   intrinsic
+   compiler
+   endian
+   arch
+   simd
+   os

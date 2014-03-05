@@ -68,6 +68,7 @@ using little = utility::enumeration<endian_type, endian_type::little>;
 using big = utility::enumeration<endian_type, endian_type::big>;
 
 using current = utility::match_t<
+  std::pair<is_unknown, unknown>,
   std::pair<is_little, little>,
   std::pair<is_big, big>
 >;
