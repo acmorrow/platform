@@ -1,7 +1,7 @@
 import cloud_sptheme as csp
 import os
 
-Project = 'MNMLSTC Platform'
+project = 'MNMLSTC Platform'
 copyright = '2014, MNMLSTC'
 
 version = '1.0'

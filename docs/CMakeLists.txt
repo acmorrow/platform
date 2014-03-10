@@ -6,7 +6,7 @@ endif ()
 mark_as_advanced(SPHINX_EXECUTABLE)
 
 add_custom_target(docs
-  COMMAND ${SPHINX_EXEUCTABLE} ${DOCS_SOURCE_DIR} ${DOCS_BINARY_DIR}
+  COMMAND ${SPHINX_EXECUTABLE} ${DOCS_SOURCE_DIR} ${DOCS_BINARY_DIR}
   COMMENT "Generating Sphinx Documentation" VERBATIM
 )
 
