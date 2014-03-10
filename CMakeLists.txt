@@ -1,4 +1,4 @@
-cmake_version_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 2.8.12)
 project(platform CXX)
 
 #------------------------------------------------------------------------------
@@ -17,7 +17,7 @@ set(DOCS_INSTALL_DIR "share/doc/mnmlstc/platform" CACHE INTERNAL "Doc Files")
 set(PLATFORM_VERSION_MAJOR 1)
 set(PLATFORM_VERSION_MINOR 0)
 set(PLATFORM_VERSION_PATCH 0)
-set(PLATFORM_VERSION_PATCH
+set(PLATFORM_VERSION
   ${PLATFORM_VERSION_MAJOR}.${PLATFORM_VERSION_MINOR}.${PLATFORM_VERSION_PATCH}
 )
 
@@ -42,7 +42,7 @@ endif ()
 set(USE_STDLIB_LIBCXX "-stdlib=libc++")
 set(USE_STD_CXX11 "-std=c++11")
 
-set(USE_PEDANTIC) "-pedantic")
+set(USE_PEDANTIC "-pedantic")
 
 set(WARN_EVERYTHING "-Weverything")
 set(WARN_NOEXCEPT "-Wnoexcept")
@@ -61,6 +61,15 @@ if (MSVC)
   set(WARN_ALL "-W4")
 endif ()
 
+check_cxx_compiler_flag(${USE_STDLIB_LIBCXX} CAN_USE_STDLIB_LIBCXX)
+check_cxx_compiler_flag(${USE_STD_CXX11} CAN_USE_STD_CXX11)
+
+check_cxx_compiler_flag(${USE_PEDANTIC} CAN_USE_PEDANTIC)
+
+check_cxx_compiler_flag(${WARN_EVERYTHING} CAN_WARN_EVERYTHING)
+check_cxx_compiler_flag(${WARN_EXTRA} CAN_WARN_EXTRA)
+check_cxx_compiler_flag(${WARN_ALL} CAN_WARN_ALL)
+
 if (CAN_USE_STDLIB_LIBCXX AND BUILD_WITH_LIBCXX)
   set(CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS} ${USE_STDLIB_LIBCXX}")
 endif ()
@@ -70,17 +79,25 @@ if (CAN_USE_STD_CXX11)
 endif ()
 
 # These headers are requied
+check_include_file_cxx(type_traits HAVE_TYPE_TRAITS)
 check_include_file_cxx(cstdint HAVE_CSTDINT)
+
+# Handle not having the required headers
+if (NOT HAVE_TYPE_TRAITS)
+  message(FATAL_ERROR "standard header <type_traits> could not be found")
+endif ()
 
 if (NOT HAVE_CSTDINT)
   message(FATAL_ERROR "standard header <cstdint> could not be found")
 endif ()
+
 
 # These macros are required
 check_cxx_symbol_exists(UINT64_C cstdint HAVE_UINT64_C_MACRO)
 check_cxx_symbol_exists(UINT32_C cstdint HAVE_UINT32_C_MACRO)
 check_cxx_symbol_exists(UINT16_C cstdint HAVE_UINT16_C_MACRO)
 
+# Handle not having the required macros
 if (NOT HAVE_UINT64_C_MACRO)
   message(FATAL_ERROR "standard macro 'UINT64_C' could not be found")
 endif ()
@@ -92,3 +109,47 @@ endif ()
 if (NOT HAVE_UINT16_C_MACRO)
   message(FATAL_ERROR "standard macro 'UINT16_C' could not be found")
 endif ()
+
+#------------------------------------------------------------------------------
+# Configuration
+#------------------------------------------------------------------------------
+write_basic_package_version_file(
+  "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake"
+  VERSION ${PLATFORM_VERSION}
+  COMPATIBILITY SameMajorVersion
+)
+
+configure_package_config_file(
+  "${PROJECT_SOURCE_DIR}/configure/${PROJECT_NAME}-config.cmake.in"
+  "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config.cmake"
+  INSTALL_DESTINATION "${CMAKE_INSTALL_DIR}"
+  PATH_VARS INCLUDE_INSTALL_DIR CMAKE_INSTALL_DIR
+)
+
+if (BUILD_TESTING)
+  set(CMAKE_TEST_COMMAND ctest)
+  add_subdirectory("${TEST_SOURCE_DIR}" "${TEST_BINARY_DIR}" EXCLUDE_FROM_ALL)
+endif ()
+
+if (BUILD_DOCS)
+  add_subdirectory("${DOCS_SOURCE_DIR}" "${DOCS_BINARY_DIR}" EXCLUDE_FROM_ALL)
+endif ()
+
+#------------------------------------------------------------------------------
+# Install
+#------------------------------------------------------------------------------
+install(FILES
+  ${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake
+  ${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config.cmake
+  DESTINATION ${CMAKE_INSTALL_DIR}
+)
+
+install(DIRECTORY "${PROJECT_SOURCE_DIR}/include/platform"
+  DESTINATION ${INCLUDE_INSTALL_DIR}
+  FILES_MATCHING PATTERN "*.hpp"
+)
+
+install(DIRECTORY "${DOCS_BINARY_DIR}/"
+  DESTINATION ${DOCS_INSTALL_DIR}
+  FILES_MATCHING PATTERN "*"
+)
