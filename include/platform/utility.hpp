@@ -8,27 +8,24 @@ namespace platform {
 inline namespace v1 {
 namespace utility {
 
+template <class T, T val> using enumeration = std::integral_constant<T, val>;
+
 template <class... Args> struct match;
 
 template <class T>
 struct match<T> : std::conditional<
-  typename T::first_type::value,
+  std::is_same<typename T::first_type, std::true_type>::value,
   typename T::second_type,
-  std::integral_constant<
-    typename T::second_type,
-    typename T::second_type::unknown
-  >
+  void
 > { };
-
 
 template <class T, class... Args>
 struct match<T, Args...> : std::conditional<
-  typename T::first_type::value,
+  std::is_same<typename T::first_type, std::true_type>::value,
   typename T::second_type,
   typename match<Args...>::type
->;
+> { };
 
-template <class T, T val> using enumeration = std::integral_constant<T, val>;
 template <bool value> using boolean = std::integral_constant<bool, value>;
 template <class... Args> using match_t = typename match<Args...>::type;
 

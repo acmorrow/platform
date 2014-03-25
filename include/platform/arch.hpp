@@ -90,6 +90,7 @@ using ppc = utility::enumeration<arch_type, arch_type::ppc>;
 using x86 = utility::enumeration<arch_type, arch_type::x86>;
 
 using current = utility::match_t<
+  std::pair<is_unknown, unknown>,
   std::pair<is_amd64, amd64>,
   std::pair<is_arm64, arm64>,
   std::pair<is_thumb, thumb>,

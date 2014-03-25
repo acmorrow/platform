@@ -85,6 +85,7 @@ using linux = utility::enumeration<os_type, os_type::linux>;
 using ios = utility::enumeration<os_type, os_type::ios>;
 
 using current = utility::match_t<
+  std::pair<is_unknown, unknown>,
   std::pair<is_windows, windows>,
   std::pair<is_android, android>,
   std::pair<is_freebsd, freebsd>,

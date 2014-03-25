@@ -72,6 +72,7 @@ using ghs = utility::enumeration<compiler_type, compiler_type::ghs>;
 using ibm = utility::enumeration<compiler_type, compiler_type::ibm>;
 
 using current = utility::match_t<
+  std::pair<is_unknown, unknown>,
   std::pair<is_clang, clang>,
   std::pair<is_intel, intel>,
   std::pair<is_msvc, msvc>,

@@ -5,6 +5,7 @@ project(platform CXX)
 # Modules, Variables, and Options
 #------------------------------------------------------------------------------
 include(CMakePackageConfigHelpers)
+include(CMakeDependentOption)
 include(CheckCXXCompilerFlag)
 include(CheckCXXSymbolExists)
 include(CheckIncludeFileCXX)
@@ -29,8 +30,20 @@ set(DOCS_BINARY_DIR "${PROJECT_BINARY_DIR}/docs")
 
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/configure")
 
+# Used by cmake-dependent-option
+list(APPEND RPM_DEP "UNIX" "NOT APPLE" "BUILD_PACKAGE")
+list(APPEND DEB_DEP "UNIX" "NOT APPLE" "BUILD_PACKAGE")
+list(APPEND PKG_DEP "APPLE" "BUILD_PACKAGE")
+list(APPEND MSI_DEP "WIN32" "BUILD_PACKAGE")
+
 option(BUILD_WITH_LIBCXX "Use libc++ as stdlib" OFF)
+option(BUILD_PACKAGE "Build packages with CPack" OFF)
 option(BUILD_DOCS "Build documentation with Sphinx Documentation Generator")
+
+cmake_dependent_option(BUILD_PACKAGE_MSI "Create an MSI" ON "${MSI_DEP}" OFF)
+cmake_dependent_option(BUILD_PACKAGE_RPM "Create an RPM" ON "${RPM_DEP}" OFF)
+cmake_dependent_option(BUILD_PACKAGE_DEB "Create a DEB" ON "${DEB_DEP}" OFF)
+cmake_dependent_option(BUILD_PACKAGE_PKG "Create a PKG" ON "${PKG_DEP}" OFF)
 
 if (APPLE AND ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
   set(BUILD_WITH_LIBCXX ON CACHE BOOL "Use libc++ as stdlib" ON)
@@ -126,6 +139,15 @@ configure_package_config_file(
   PATH_VARS INCLUDE_INSTALL_DIR CMAKE_INSTALL_DIR
 )
 
+include_directories(${PROJECT_SOURCE_DIR}/include)
+
+add_compile_options(
+  $<$<BOOL:${CAN_USE_STD_CXX11}>:${USE_STD_CXX11}>
+  $<$<BOOL:${CAN_WARN_ALL}>:${WARN_ALL}>
+  $<$<BOOL:${CAN_WARN_NOEXCEPT}>:${WARN_NOEXCEPT}>
+  $<$<BOOL:${CAN_WARN_EXTRA}>:${WARN_EXTRA}>
+)
+
 if (BUILD_TESTING)
   set(CMAKE_TEST_COMMAND ctest)
   add_subdirectory("${TEST_SOURCE_DIR}" "${TEST_BINARY_DIR}" EXCLUDE_FROM_ALL)
@@ -133,6 +155,10 @@ endif ()
 
 if (BUILD_DOCS)
   add_subdirectory("${DOCS_SOURCE_DIR}" "${DOCS_BINARY_DIR}" EXCLUDE_FROM_ALL)
+endif ()
+
+if (BUILD_PACKAGE)
+  add_subdirectory("${PACK_SOURCE_DIR}" "${PACK_BINARY_DIR}" EXCLUDE_FROM_ALL)
 endif ()
 
 #------------------------------------------------------------------------------
@@ -149,7 +175,15 @@ install(DIRECTORY "${PROJECT_SOURCE_DIR}/include/platform"
   FILES_MATCHING PATTERN "*.hpp"
 )
 
-install(DIRECTORY "${DOCS_BINARY_DIR}/"
-  DESTINATION ${DOCS_INSTALL_DIR}
-  FILES_MATCHING PATTERN "*"
-)
+if (BUILD_DOCS)
+  install(DIRECTORY "${DOCS_BINARY_DIR}/"
+    DESTINATION ${DOCS_INSTALL_DIR}
+    FILES_MATCHING
+    PATTERN ".buildinfo" EXCLUDE
+    PATTERN "CMakeFiles" EXCLUDE
+    PATTERN ".doctrees" EXCLUDE
+    PATTERN "Makefile" EXCLUDE
+    PATTERN "*.cmake" EXCLUDE
+    PATTERN "*"
+  )
+endif ()
