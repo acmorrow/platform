@@ -10,6 +10,24 @@ MNMLSTC Platform within a project. As MNMLSTC Platform does not require
 a configuration step, and is header only, installation is as simple as letting
 CMake's install target being run.
 
+CMake and find_package
+----------------------
+
+MNMLSTC Platform was designed to be used in conjunction with the CMake build
+system. After installing MNMLSTC Platform (either from source or via an
+installation package), one can use CMake's ``find_package`` function.
+
+.. code-block:: cmake
+
+   find_package(platform REQUIRED NO_CMAKE_BUILDS_PATH)
+
+   # Later on
+   include_directories(${PLATFORM_INCLUDE_DIR})
+
+It is recommended that one use ``NO_CMAKE_BUILDS_PATH`` to enforce MNMLSTC
+Platform's inability to be used from a build tree. It was *not* designed with
+this usage in mind.
+
 Host to Network
 ---------------
 
