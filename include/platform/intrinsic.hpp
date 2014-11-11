@@ -79,7 +79,7 @@ inline std::uint64_t rotate_right (std::uint64_t value, int shift) noexcept {
 }
 
 [[gnu::always_inline]]
-inline std::uint32_t rotate_left (std::uint32_t value, int shift) noexcept {
+inline std::uint32_t rotate_right (std::uint32_t value, int shift) noexcept {
 #if PLATFORM_COMPILER_MSVC
   return _rotr(value, shift)
 #else

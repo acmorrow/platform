@@ -29,7 +29,7 @@
 
 #if defined (__SSSE3__)
   #undef PLATFORM_SIMD_SSSE3
-  #define PLATFORM_SIMD_SSSE 1
+  #define PLATFORM_SIMD_SSSE3 1
 #endif /* defined(__SSSE3__) */
 
 #if defined(__SSE3__)

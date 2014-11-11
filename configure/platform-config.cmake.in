@@ -1,8 +1,22 @@
-set(PLATFORM_VERSION 1.0.0)
-
 @PACKAGE_INIT@
 
-set_and_check(PLATFORM_INCLUDE_DIR "@PACKAGE_INCLUDE_INSTALL_DIR@")
-set_and_check(PLATFORM_CMAKE_DIR "@PACKAGE_CMAKE_INSTALL_DIR@")
+set(PLATFORM_VERSION_MAJOR @PROJECT_VERSION_MAJOR@)
+set(PLATFORM_VERSION_MINOR @PROJECT_VERSION_MINOR@)
+set(PLATFORM_VERSION_PATCH @PROJECT_VERSION_PATCH@)
+set(PLATFORM_VERSION_TWEAK @PROJECT_VERSION_TWEAK@)
+set(PLATFORM_VERSION @PROJECT_VERSION@)
+
+if (EXISTS "${CMAKE_CURRENT_LIST_DIR}/platform-targets.cmake")
+  include("${CMAKE_CURRENT_LIST_DIR}/platform-targets.cmake")
+elseif (EXISTS "${CMAKE_CURRENT_LIST_DIR}/platform-export.cmake")
+  include("${CMAKE_CURRENT_LIST_DIR}/platform-export.cmake")
+endif ()
+
+# Provided for backwards compatibility
+get_target_property(PLAT_DIR mnmlstc::platform INTERFACE_INCLUDE_DIRECTORIES)
+
+set_and_check(PLATFORM_INCLUDE_DIR ${PLAT_DIR})
+set_and_check(PLATFORM_INCLUDE_DIRS ${PLAT_DIR})
+unset(PLAT_DIR)
 
 check_required_components(platform)

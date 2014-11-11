@@ -3,7 +3,7 @@
 
 #include <platform/utility.hpp>
 
-#define PLATFORM_ARCH_UKNOWN 0
+#define PLATFORM_ARCH_UNKNOWN 0
 #define PLATFORM_ARCH_AMD64 0
 #define PLATFORM_ARCH_ARM64 0
 #define PLATFORM_ARCH_THUMB 0
